@@ -7,7 +7,7 @@ Local, fast (~26 ms/cmd on GPU after one weight load), no API.
 - **tool**: routes a command to git / docker / node / k8s / shell — acc **0.985**
 - **safe**: "runnable without human review?" — acc **1.000** @ t=0.5, ECE **0.029**
 
-Weights: `<HF-username>/laya-cli-gate` on the Hub (1.6 GB, `safetensors`) — coming shortly;
+Weights: [`uzuw/laya-cli-gate`](https://huggingface.co/uzuw/laya-cli-gate) on the Hub (1.6 GB, `safetensors`);
 code here reproduces them from the base checkpoint.
 
 ## Quick use (agent skill)
@@ -16,9 +16,9 @@ code here reproduces them from the base checkpoint.
 .opencode/skills/laya-gate/gate.py "<cmd>" [...] [--tools '{"name":"desc"}'] [--model <dir|HF-id>]
 ```
 
-Needs the `laya` package (`pip install laya`) and weights: `--model <you>/laya-cli-gate`
+Needs the `laya` package (`pip install laya`) and weights: `--model uzuw/laya-cli-gate`
 (HF Hub, once published), a local `laya-cli/` dir from running `laya_finetune.py`, or
-`Agent("<you>/laya-cli-gate")` in Python. Batch commands in one call —
+`Agent("uzuw/laya-cli-gate")` in Python. Batch commands in one call —
 1.6 GB weights load once per process. `safe:false` → ask the human. Full protocol:
 `.opencode/skills/laya-gate/SKILL.md`.
 
