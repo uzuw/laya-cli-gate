@@ -9,6 +9,9 @@ Local, fast (~26 ms/cmd on GPU after one weight load), no API.
 
 Weights: [`uzuw/laya-cli-gate`](https://huggingface.co/uzuw/laya-cli-gate) on the Hub (1.6 GB, `safetensors`);
 code here reproduces them from the base checkpoint.
+Hub repo also ships `encoder/config.json` (ModernBERT config only, no weights): the loader
+random-inits the encoder from it and our `model.safetensors` overwrites everything — so users
+skip the 1.6 GB upstream encoder download (whose Xet-backed blobs fail in some environments).
 
 ## Quick use (agent skill)
 

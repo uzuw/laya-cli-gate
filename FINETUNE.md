@@ -37,4 +37,8 @@ Verdict: good gate (human reviews `safe:false`), not an auto-approver. Next leve
 
 ## Snapshot
 Locked: `laya-cli-best/` (weights + config copy of the final checkpoint).
+
+## Published
+- Code: [uzuw/laya-cli-gate](https://github.com/uzuw/laya-cli-gate) (this content, Apache-2.0).
+- Weights: [uzuw/laya-cli-gate](https://huggingface.co/uzuw/laya-cli-gate) (`model.safetensors` + `rl_agent_config.json` + `encoder/config.json` + card). The `encoder/` dir holds only the ModernBERT config — loader random-inits from it and our state_dict overwrites all, skipping the 1.6 GB upstream encoder download (Xet-backed, fails in some envs). Verified via clean-room `Agent("uzuw/laya-cli-gate")` load.
 - Known warning (upstream, not ours): checkpoint ships `temperature choice:11+ ≈ 0.10` outside [0.5,5]; laya clamps it — treat that bucket's confidence as uncalibrated.
