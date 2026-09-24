@@ -5,7 +5,7 @@ description: Gate terminal commands through the local finetuned laya model befor
 
 # Laya Gate
 
-Fast local pre-execution gate for terminal commands: **tool routing + safety verdict** in ms per command (after one ~1.6GB weight load per process). Model: finetuned head in `laya/laya-cli/` — tool acc 0.981, safe acc 1.000 @ t=0.5, ECE 0.023 (see `laya/FINETUNE.md`).
+Fast local pre-execution gate for terminal commands: **tool routing + safety verdict** in ms per command (after one ~1.6GB weight load per process). Model: finetuned head in `laya/laya-cli/` — tool acc 0.995, safe acc 1.000 @ t=0.5, ECE 0.015 — plus a deterministic deny net over known-dangerous verbs (pipe-to-shell, -delete, unpublish/publish, reset --hard, delete, prune, rm, …; `--dry-run` exempts). Deny forces `safe: false`; end-to-end 12/12 on unseen probes (see `laya/FINETUNE.md`).
 
 ## Use
 
@@ -18,8 +18,10 @@ laya/.venv/bin/python laya/.opencode/skills/laya-gate/gate.py "<cmd1>" "<cmd2>" 
 One JSON line per command:
 
 ```json
-{"cmd": "git push origin main", "tool": "git", "tool_conf": 1.0, "safe_p": 0.13, "safe": false, "ms": 42}
+{"cmd": "git push origin main", "tool": "git", "tool_conf": 1.0, "safe_p": 0.13, "safe": false, "deny": "git-push", "ms": 42}
 ```
+
+- `deny` names the matched deny rule, or `null` when the verdict is purely the model's.
 
 - `safe: false` → ask the human before running. Never override with a higher `--threshold` to force a pass.
 - `tool_conf < 0.5` → the command fits none of the tools; treat as `shell` and re-check safety.
@@ -36,6 +38,6 @@ Custom names are zero-shot (the head was finetuned on the default 5), so treat `
 
 ## Rules
 
-- Operating threshold is `--threshold 0.5` (default). `0.7` is miscalibrated on this checkpoint — do not use it.
+- Operating threshold is `--threshold 0.5` (default; verified 1.000 @0.4–0.8 on train, ECE 0.015). Never raise the threshold to force a pass.
 - First call per session is slow (weight load); subsequent questions in the same process are ms. That is why batching matters.
 - The gate is a classifier, not a sandbox: `safe: true` never excuses running an irreversible command you do not understand.

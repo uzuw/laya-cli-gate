@@ -9,7 +9,7 @@ import numpy as np
 EPOCHS = 30
 BATCH_SIZE = 8
 LR = 2e-4  # continue from checkpoint, lower LR
-SEED = 21  # round 2 (65 cmds)
+SEED = 7  # round 4 (184 cmds, balanced 92/92)
 PATIENCE = 12
 
 torch.manual_seed(SEED)

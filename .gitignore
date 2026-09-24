@@ -2,6 +2,5 @@
 __pycache__/
 *.pyc
 .hf_cache/
-laya-cli/
-laya-cli-best/
+# ponytail: 1.6GB weight blobs live on HuggingFace, not in git — tiny configs stay tracked
 *.safetensors
